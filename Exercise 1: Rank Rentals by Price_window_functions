@@ -1,0 +1,21 @@
+Description of the Question :
+==============================
+For each single rental, show the rental_date, 
+the title of the movie rented, its genre, the payment amount, and the rank of the rental in terms of the price paid (the most expensive rental should have rank = 1). 
+The ranking should be created separately for each movie genre. 
+Allow the same rank for multiple rows and allow gaps in numbering.
+
+-> The movie table contains records of all movies available in the store. The columns are id, title, release_year, genre, and editor_ranking.
+
+-> The single_rental table stores information about movies that were rented for a certain period of time by customers. 
+The columns are id, rental_date, rental_period, platform, 
+customer_id (references the customer table), movie _id (references the movie table), payment_date, and payment_amount
+
+Solution:
+============
+SELECT sr.rental_date,m.title,m.genre,sr.payment_amount,
+rank() over(partition by m.genre order by sr.payment_amount desc) as rnk
+FROM single_rental sr
+JOIN movie m
+ON sr.movie_id == m.id;
+
